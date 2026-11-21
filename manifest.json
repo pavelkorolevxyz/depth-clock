@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "depth-clock",
+  "name": "Depth Clock",
+  "version": "0.1.0",
+  "author": "depth-clock",
+  "description": "A clock set behind the foreground of the wallpaper, on every screen",
+  "kinds": ["service"],
+  "entryPoints": { "service": "qml/Clock.qml" },
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+research/out/
+research/cache/
+*.rgb
+*.raw
+*.npy

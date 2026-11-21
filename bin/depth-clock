@@ -1,0 +1,16 @@
+#!/bin/sh
+# The depth-clock CLI, run from this checkout.
+# The first run creates its Python environment with uv, outside the checkout,
+# so the checkout stays exactly as in git and plugin folders stay free of
+# symlinks; later runs use it directly.
+self=$(readlink -f "$0")
+repo=$(dirname "$(dirname "$self")")
+env="${DEPTH_CLOCK_VENV:-${XDG_DATA_HOME:-$HOME/.local/share}/depth-clock/venv}"
+stamp="$env/.depth-clock-synced"
+if [ ! -x "$env/bin/python" ] || [ ! -f "$stamp" ] || [ "$repo/uv.lock" -nt "$stamp" ]; then
+  UV_PROJECT_ENVIRONMENT="$env" uv sync --quiet --frozen --no-dev --project "$repo" >&2 || exit 1
+  touch "$stamp"
+fi
+# Bytecode goes to the cache too, so the checkout stays exactly as in git.
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME:-$HOME/.cache}/depth-clock/pycache"
+exec "$env/bin/python" -m depth_clock "$@"
